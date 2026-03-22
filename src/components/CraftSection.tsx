@@ -13,8 +13,28 @@ const CraftSection = () => {
   const ref2 = useScrollReveal();
 
   return (
-    <section id="craft" className="py-24 lg:py-32">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="craft" className="relative py-24 lg:py-32 overflow-hidden">
+      {/* Vertical label — left */}
+      <div className="absolute left-6 sm:left-10 top-1/2 -translate-y-1/2 z-10">
+        <span
+          className="font-display text-[9px] tracking-[0.4em] uppercase text-concrete"
+          style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+        >
+          Craftsmanship
+        </span>
+      </div>
+
+      {/* Vertical label — right */}
+      <div className="absolute right-6 sm:right-10 top-1/2 -translate-y-1/2 z-10">
+        <span
+          className="font-display text-[9px] tracking-[0.4em] uppercase text-concrete"
+          style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+        >
+          Engineering · Detail
+        </span>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 sm:px-16 lg:px-24">
         {/* Full-width image band */}
         <div ref={ref1} className="reveal-scale mb-20 relative overflow-hidden aspect-[21/9]">
           <img
