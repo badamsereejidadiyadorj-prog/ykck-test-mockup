@@ -5,38 +5,38 @@ import tritanImg from "@/assets/ykck-tritan.jpg";
 import layersImg from "@/assets/ykck-layers.jpg";
 
 const products = [
-  {
-    name: "Edge Bottle 450ml",
-    tagline: "A cup with its own edges",
-    price: "$42",
-    image: steelImg,
-  },
-  {
-    name: "Trail Flask 600ml",
-    tagline: "Adventure-ready companion",
-    price: "$48",
-    image: adventureImg,
-  },
-  {
-    name: "Tritan Tumbler 500ml",
-    tagline: "Transparent, safe, beautiful",
-    price: "$36",
-    image: tritanImg,
-  },
-  {
-    name: "Thermal Cup 380ml",
-    tagline: "Five-layer vacuum lock",
-    price: "$52",
-    image: layersImg,
-  },
+  { name: "Edge Bottle 450ml", tagline: "A cup with its own edges", price: "$42", image: steelImg },
+  { name: "Trail Flask 600ml", tagline: "Adventure-ready companion", price: "$48", image: adventureImg },
+  { name: "Tritan Tumbler 500ml", tagline: "Transparent, safe, beautiful", price: "$36", image: tritanImg },
+  { name: "Thermal Cup 380ml", tagline: "Five-layer vacuum lock", price: "$52", image: layersImg },
 ];
 
 const ProductsSection = () => {
   const sectionRef = useScrollReveal();
 
   return (
-    <section id="products" className="py-24 lg:py-32 bg-card">
-      <div className="max-w-7xl mx-auto px-6" ref={sectionRef}>
+    <section id="products" className="relative py-24 lg:py-32 bg-card overflow-hidden">
+      {/* Vertical label — left */}
+      <div className="absolute left-6 sm:left-10 top-1/2 -translate-y-1/2 z-10">
+        <span
+          className="font-display text-[9px] tracking-[0.4em] uppercase text-concrete"
+          style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+        >
+          Collection
+        </span>
+      </div>
+
+      {/* Vertical label — right */}
+      <div className="absolute right-6 sm:right-10 top-1/2 -translate-y-1/2 z-10">
+        <span
+          className="font-display text-[9px] tracking-[0.4em] uppercase text-concrete"
+          style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+        >
+          04 Products
+        </span>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 sm:px-16 lg:px-24" ref={sectionRef}>
         <div data-reveal className="reveal-up mb-16">
           <p className="text-sm tracking-[0.3em] uppercase text-taupe mb-3">Collection</p>
           <h2 className="font-display text-4xl lg:text-5xl font-bold tracking-tight" style={{ lineHeight: 1.1 }}>
