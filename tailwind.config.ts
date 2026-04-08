@@ -51,7 +51,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        "stone-warm": "hsl(var(--stone-warm))",
+        "rose-gold": "hsl(var(--rose-gold))",
         cream: "hsl(var(--cream))",
         taupe: "hsl(var(--taupe))",
         concrete: "hsl(var(--concrete))",
