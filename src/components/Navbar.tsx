@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -21,19 +22,27 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <span className="font-display text-2xl font-bold tracking-tight">
-          YKCK<sup className="text-xs align-super text-muted-foreground">®</sup>
+          ГОЁЛ<sup className="text-xs align-super text-muted-foreground">®</sup>
         </span>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-          <button onClick={() => scrollTo("products")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Products</button>
-          <button onClick={() => scrollTo("craft")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Craft</button>
-          <button onClick={() => scrollTo("order")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Order</button>
+          <button onClick={() => scrollTo("products")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Бүтээгдэхүүн</button>
+          <button onClick={() => scrollTo("craft")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Технологи</button>
+          <button onClick={() => scrollTo("order")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Захиалга</button>
         </div>
-        <button
-          onClick={() => scrollTo("order")}
-          className="bg-primary text-primary-foreground px-5 py-2 text-sm font-medium tracking-wide hover:opacity-90 active:scale-[0.97] transition-all duration-200"
-        >
-          Shop Now
-        </button>
+        <div className="flex items-center gap-4">
+          <Link
+            to="/admin"
+            className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-200 hidden md:block"
+          >
+            Админ
+          </Link>
+          <button
+            onClick={() => scrollTo("order")}
+            className="bg-primary text-primary-foreground px-5 py-2 text-sm font-medium tracking-wide hover:opacity-90 active:scale-[0.97] transition-all duration-200 rounded-sm"
+          >
+            Захиалах
+          </button>
+        </div>
       </div>
     </nav>
   );
