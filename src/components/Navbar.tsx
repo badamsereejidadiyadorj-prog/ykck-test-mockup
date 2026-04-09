@@ -28,6 +28,7 @@ const Navbar = () => {
           <button onClick={() => scrollTo("products")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Бүтээгдэхүүн</button>
           <button onClick={() => scrollTo("craft")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Технологи</button>
           <button onClick={() => scrollTo("order")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Захиалга</button>
+          <button onClick={() => scrollTo("returns")} className="text-muted-foreground hover:text-foreground transition-colors duration-200">Буцаалт</button>
         </div>
         <div className="flex items-center gap-4">
           <Link
