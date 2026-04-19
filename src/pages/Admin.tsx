@@ -121,6 +121,19 @@ const Admin = () => {
     },
   });
 
+  const deleteProduct = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("products").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Устгагдлаа");
+    },
+    onError: () => toast.error("Устгахад алдаа гарлаа"),
+  });
+
   const updateOrderStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       const { error } = await supabase.from("orders").update({ status }).eq("id", id);
@@ -161,6 +174,8 @@ const Admin = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setSession(null);
+    queryClient.clear();
+    toast.success("Амжилттай гарлаа");
   };
 
   const statusColors: Record<string, string> = {
@@ -328,6 +343,14 @@ const Admin = () => {
                       className={`px-3 py-2 text-xs font-medium rounded-sm border transition-colors ${product.is_active ? "border-destructive/30 text-destructive hover:bg-destructive/5" : "border-green-300 text-green-700 hover:bg-green-50"}`}
                     >
                       {product.is_active ? "Идэвхгүй" : "Идэвхжүүлэх"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm(`"${product.name}"-г устгах уу?`)) deleteProduct.mutate(product.id);
+                      }}
+                      className="px-3 py-2 text-xs font-medium rounded-sm border border-destructive/30 text-destructive hover:bg-destructive/5 transition-colors"
+                    >
+                      Устгах
                     </button>
                   </div>
                 </div>
