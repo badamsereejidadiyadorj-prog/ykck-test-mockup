@@ -521,7 +521,7 @@ npm run dev          # Хөгжүүлэлтийн сервер
 npm run build        # Production build
 ```
 
-`.env` файл нь Lovable Cloud-оор автоматаар үүсгэгдэнэ:
+`.env` файл автоматаар үүсгэгдэнэ:
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
 - `VITE_SUPABASE_PROJECT_ID`
