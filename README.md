@@ -51,7 +51,7 @@
 | **Lucide React** | latest | Иконууд |
 | **Sonner** | latest | Toast мэдэгдэл |
 
-### Backend (Lovable Cloud)
+### Backend
 | Үйлчилгээ | Зориулалт |
 |-----------|-----------|
 | **Supabase Auth** | Админ нэвтрэлт (email + password) |
