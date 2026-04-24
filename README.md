@@ -51,7 +51,7 @@
 | **Lucide React** | latest | Иконууд |
 | **Sonner** | latest | Toast мэдэгдэл |
 
-### Backend (Lovable Cloud)
+### Backend
 | Үйлчилгээ | Зориулалт |
 |-----------|-----------|
 | **Supabase Auth** | Админ нэвтрэлт (email + password) |
@@ -201,6 +201,102 @@ docs/
 - Имэйл / Нууц үг талбар
 - "Нэвтрэх" / "Шинэ бүртгэл үүсгэх" / "Нүүр хуудас руу буцах" холбоосууд
 - Нэвтэрсний дараа `user_roles`-оос `admin` эрх шалгана
+
+---
+
+### 8. Админ — Хяналтын самбар (Dashboard)
+
+> Нийт орлого, захиалгын тоо, хүлээгдэж буй захиалга, бүтээгдэхүүн, буцаалтын **5 KPI карт** + **сүүлийн 7 хоногийн орлогын муруй (LineChart)** + **захиалгын төлвийн donut (PieChart)** + **шилдэг бүтээгдэхүүний BarChart**.
+
+![Admin Dashboard](./docs/screenshots/08-admin-dashboard.png)
+
+**Файл:** `src/components/AdminDashboard.tsx`
+**Үйлдлүүд:**
+- `orders` хүснэгтээс real-time өгөгдөл татаж нэгтгэн боловсруулна.
+- Нийт орлого = `SUM(total_amount)`.
+- Хүлээгдэж буй = `status = 'pending'` тоо.
+- 7 хоногийн муруй: өдрөөр group хийж `total_amount` нийлбэрийг гаргана.
+- Шилдэг бүтээгдэхүүн: захиалгын `items` jsonb-аас тоо ширхэгийг тоолж эрэмбэлнэ.
+
+---
+
+### 9. Админ — Захиалгын жагсаалт
+
+> Захиалга бүрийг нэр, утас, бүтээгдэхүүн, нийт дүн, огноо, статусаар жагсаасан карт. **"Батлах"** товчоор `pending → confirmed → delivered` урагшлуулна.
+
+![Admin Orders](./docs/screenshots/09-admin-orders.png)
+
+**Файл:** `src/pages/Admin.tsx` (Захиалга таб)
+**Үйлдлүүд:**
+- **Харах:** `supabase.from('orders').select('*').order('created_at', { ascending: false })`
+- **Статус шинэчлэх:** "Батлах" дарахад дараагийн төлөв рүү шилжүүлнэ:
+  ```ts
+  const next = { pending: 'confirmed', confirmed: 'delivered' }[order.status];
+  await supabase.from('orders').update({ status: next }).eq('id', order.id);
+  ```
+- Статусын badge өнгө: шар (хүлээгдэж буй), цэнхэр (батлагдсан), ногоон (хүргэгдсэн).
+
+---
+
+### 10. Админ — Бүтээгдэхүүний жагсаалт ба үйлдлүүд
+
+> Бүх бүтээгдэхүүнийг нэр, тайлбар, үнээр харуулсан жагсаалт. Мөр бүрд **Засах / Идэвхгүй болгох / Устгах** товчнууд + дээд талд **"+ Шинэ нэмэх"**.
+
+![Admin Products](./docs/screenshots/10-admin-products.png)
+
+**Файл:** `src/pages/Admin.tsx` (Бүтээгдэхүүн таб)
+**Үйлдлүүд:**
+- **Засах** — мөрийг inline edit горимд шилжүүлж нэр / үнэ / тайлбар / зураг шинэчлэнэ.
+- **Идэвхгүй / Идэвхтэй** — `is_active` талбарыг toggle хийнэ (нийтэд харагдахгүй болгоно):
+  ```ts
+  await supabase.from('products').update({ is_active: !p.is_active }).eq('id', p.id);
+  ```
+- **Устгах** — баталгаажуулалтын дараа бүтээгдэхүүнийг бүрмөсөн устгана:
+  ```ts
+  await supabase.from('products').delete().eq('id', p.id);
+  ```
+
+---
+
+### 11. Админ — Шинэ бүтээгдэхүүн нэмэх (зураг upload-той)
+
+> "+ Шинэ нэмэх" дарахад нээгдэх форм: **Нэр / Үнэ / Тайлбар / Зураг (file picker) / Ангилал**.
+
+![Admin Product Create](./docs/screenshots/11-admin-product-create.png)
+
+**Файл:** `src/pages/Admin.tsx`
+**Үйлдлүүд:**
+1. Файл сонгоход `product-images` bucket руу upload хийнэ.
+2. `getPublicUrl` авна.
+3. `products` хүснэгтэд бүх талбарыг `is_active = true` төлөвтэй insert хийнэ.
+
+```ts
+const path = `${Date.now()}-${file.name}`;
+await supabase.storage.from('product-images').upload(path, file);
+const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(path);
+
+await supabase.from('products').insert({
+  name, price: Number(price), description, category,
+  image_url: publicUrl, is_active: true,
+});
+```
+
+---
+
+### 12. Админ — Буцаалтууд
+
+> Үйлчлүүлэгчдийн илгээсэн буцаалтын хүсэлтүүд. Хоосон үед **"Буцаалт байхгүй."** мессеж харагдана.
+
+![Admin Returns](./docs/screenshots/12-admin-returns.png)
+
+**Файл:** `src/pages/Admin.tsx` (Буцаалт таб)
+**Үйлдлүүд:**
+- `returns` хүснэгтээс жагсаалтыг харах.
+- Хүсэлт бүр дээр **Approve / Reject** товч:
+  ```ts
+  await supabase.from('returns').update({ status: 'approved' }).eq('id', r.id);
+  await supabase.from('returns').update({ status: 'rejected' }).eq('id', r.id);
+  ```
 
 ---
 
@@ -521,7 +617,7 @@ npm run dev          # Хөгжүүлэлтийн сервер
 npm run build        # Production build
 ```
 
-`.env` файл нь Lovable Cloud-оор автоматаар үүсгэгдэнэ:
+`.env` файл автоматаар үүсгэгдэнэ:
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
 - `VITE_SUPABASE_PROJECT_ID`
